@@ -1,0 +1,26 @@
+<script>
+
+  function makeImage(value) {
+    const minutes = Math.floor(value / 60);
+    const seconds = value % 60;
+
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 16;
+    canvas.height = 16;
+
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = "white";
+    //ctx.fillRect(8, 8, 8, 8);
+
+    ctx.font = "10px sans-serif";
+    ctx.fillText(minutes, 0, 8);
+    ctx.fillText(minutes, 0, 8);
+    ctx.fillText(seconds, 0, 16);
+    ctx.fillText(seconds, 0, 16);
+
+    return canvas.toDataURL();
+  }
+
+</script>
+
