@@ -1,6 +1,8 @@
 const { app, BrowserWindow, Tray, Menu, nativeImage } = require('electron');
+const Timer = require('./Timer');
 
 let win, tray;
+let timer = new Timer(updateIcon);
 
 function createWindow() {
   win = new BrowserWindow({ show: false });
@@ -20,17 +22,6 @@ function createTrayIcon() {
   })
 }
 
-app.on('ready', () => { createWindow(); createTrayIcon() });
-app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
-app.on('activate', () => { if (!win) createWindow(); });
-
-
-
-/////////////////////////////////
-
-
-
-
 function updateIcon() {
   let json = JSON.stringify(timer);
   win.webContents.executeJavaScript(`makeImage(${json})`, false, (dataURL) => {
@@ -38,49 +29,7 @@ function updateIcon() {
   });
 }
 
-
-
-class Timer {
-
-  constructor() {
-    this.started = false;
-    this.intervalId = null;
-    this.secondsToGo = 20 * 60;
-    this.secondsLeft = this.secondsToGo;
-  }
-
-  toggle() {
-    if (!this.started) this.start();
-    else this.pause();
-  }
-
-  start() {
-    this.started = true;
-    updateIcon();
-
-    let startTime = Date.now();
-    this.intervalId = setInterval(() => {
-      const spent = Math.round((Date.now() - startTime) / 1000); // seconds
-      this.secondsLeft = this.secondsToGo - spent;
-      updateIcon();
-    }, 1000);
-  }
-
-  pause() {
-    this.started = false;
-    clearInterval(this.intervalId);
-    updateIcon();
-  }
-
-}
-
-let timer = new Timer();
-
-
-
-
-
-
-
-
+app.on('ready', () => { createWindow(); createTrayIcon() });
+app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
+app.on('activate', () => { if (!win) createWindow(); });
 
