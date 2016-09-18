@@ -1,16 +1,17 @@
 <script>
 
-  function makeImage(value) {
-    const minutes = Math.floor(value / 60);
-    const seconds = value % 60;
+  function makeImage(timer) {
+    if (!timer) timer = { secondsLeft: 1200, started: false };
 
+    const minutes = Math.floor(timer.secondsLeft / 60);
+    const seconds = timer.secondsLeft % 60;
 
     const canvas = document.createElement('canvas');
     canvas.width = 16;
     canvas.height = 16;
 
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = "white";
+    ctx.fillStyle = timer.started ? "white" : "#bbb";
     //ctx.fillRect(8, 8, 8, 8);
 
     ctx.font = "10px sans-serif";
