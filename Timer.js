@@ -1,5 +1,6 @@
 const { dialog } = require('electron');
 
+
 class Timer {
 
   constructor(updateView) {
@@ -7,7 +8,7 @@ class Timer {
 
     this.started = false;
     this.intervalId = null;
-    this.secondsToGo = 5; //20 * 60;
+    this.secondsToGo = 20 * 60;
     this.secondsLeft = this.secondsToGo;
   }
 
@@ -16,8 +17,12 @@ class Timer {
     else this.pause();
   }
 
-  start() {
+  start(minutes) {
+    if (this.started) this.pause();
+    if (minutes) this.secondsToGo = minutes * 60;
+
     this.started = true;
+    this.secondsLeft = this.secondsToGo;
     this.updateView();
 
     let startTime = Date.now();
@@ -28,6 +33,7 @@ class Timer {
 
       if (this.secondsLeft <= 0) {
         this.pause();
+        this.secondsToGo = 20 * 60;
         dialog.showMessageBox({ message: "Time to take a break!", buttons: [] });
       }
     }, 1000);

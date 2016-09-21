@@ -15,6 +15,13 @@ function createTrayIcon() {
     tray = new Tray(nativeImage.createFromDataURL(dataURL));
 
     tray.setContextMenu(Menu.buildFromTemplate([
+      { label: '5 sec',  click() { timer.start(5 / 60) } },
+      { label: '30 sec', click() { timer.start(.5) } },
+      { label: '1 min',  click() { timer.start(1)  } },
+      { label: '5 min',  click() { timer.start(5)  } },
+      { label: '10 min', click() { timer.start(10) } },
+      { label: '15 min', click() { timer.start(15) } },
+      { label: '20 min', click() { timer.start(20) } },
       { label: 'exit', click() { app.quit() } }
     ]));  
 
@@ -23,7 +30,7 @@ function createTrayIcon() {
 }
 
 function updateIcon() {
-  let json = JSON.stringify(timer);
+  let json = JSON.stringify({ secondsLeft: timer.secondsLeft, started: timer.started });
   win.webContents.executeJavaScript(`makeImage(${json})`, false, (dataURL) => {
     tray.setImage(nativeImage.createFromDataURL(dataURL));
   });
