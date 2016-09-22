@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, nativeImage } = require('electron');
+const { app, BrowserWindow, Tray, Menu, nativeImage, globalShortcut } = require('electron');
 const Timer = require('./Timer');
 
 let win, tray;
@@ -23,7 +23,7 @@ function createTrayIcon() {
       { label: '15 min', click() { timer.start(15) } },
       { label: '20 min', click() { timer.start(20) } },
       { label: 'exit', click() { app.quit() } }
-    ]));  
+    ]));
 
     tray.on('click', () => timer.toggle());
     tray.on('double-click', () => timer.start(20));
@@ -37,7 +37,12 @@ function updateIcon() {
   });
 }
 
-app.on('ready', () => { createWindow(); createTrayIcon() });
+function registerShortcuts() {
+  globalShortcut.register("Super+Y", () => timer.toggle());
+  globalShortcut.register("Super+Shift+Y", () => timer.start(20));
+}
+
+app.on('ready', () => { createWindow(); createTrayIcon(); registerShortcuts(); });
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
 app.on('activate', () => { if (!win) createWindow(); });
 
