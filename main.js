@@ -15,9 +15,9 @@ function createTrayIcon() {
     tray = new Tray(nativeImage.createFromDataURL(dataURL));
 
     tray.setContextMenu(Menu.buildFromTemplate([
-      { label: '5 sec',  click() { timer.start(5 / 60) } },
-      { label: '30 sec', click() { timer.start(.5) } },
-      { label: '1 min',  click() { timer.start(1)  } },
+      // { label: '5 sec',  click() { timer.start(5 / 60) } },
+      // { label: '30 sec', click() { timer.start(.5) } },
+      // { label: '1 min',  click() { timer.start(1)  } },
       { label: '5 min',  click() { timer.start(5)  } },
       { label: '10 min', click() { timer.start(10) } },
       { label: '15 min', click() { timer.start(15) } },
@@ -26,6 +26,7 @@ function createTrayIcon() {
     ]));  
 
     tray.on('click', () => timer.toggle());
+    tray.on('double-click', () => timer.start(20));
   })
 }
 
