@@ -1,7 +1,9 @@
 <script>
 
+  const maxSeconds = 20 * 60;
+
   function makeImage(timer) {
-    if (!timer) timer = { secondsLeft: 1200, started: false };
+    if (!timer) timer = { secondsLeft: maxSeconds, started: false };
 
     const minutes = Math.floor(timer.secondsLeft / 60);
     const seconds = timer.secondsLeft % 60;
@@ -11,14 +13,25 @@
     canvas.height = 16;
 
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = timer.started ? "white" : "#bbb";
-    //ctx.fillRect(8, 8, 8, 8);
+    ctx.fillStyle = timer.started ? "white" : "#999";
 
-    ctx.font = "10px sans-serif";
-    ctx.fillText(minutes, 0, 8);
-    ctx.fillText(minutes, 0, 8);
-    ctx.fillText(seconds, 0, 16);
-    ctx.fillText(seconds, 0, 16);
+    // ctx.font = "10px sans-serif";
+    // ctx.fillText(minutes, 0, 8);
+    // ctx.fillText(minutes, 0, 8);
+    // ctx.fillText(seconds, 0, 16);
+    // ctx.fillText(seconds, 0, 16);
+
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = ctx.fillStyle;
+    ctx.beginPath();
+    ctx.arc(8, 8, 7, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(8, 8);
+    ctx.arc(8, 8, 6, 0, Math.PI * 2 * timer.secondsLeft / maxSeconds, false);
+    ctx.lineTo(8, 8);
+    ctx.fill();
 
     return canvas.toDataURL();
   }
